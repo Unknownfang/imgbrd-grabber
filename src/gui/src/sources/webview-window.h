@@ -2,6 +2,8 @@
 #define WEBVIEW_WINDOW_H
 
 #include <QDialog>
+#include <QList>
+#include <QNetworkCookie>
 #include <QTimer>
 
 
@@ -50,11 +52,22 @@ class WebViewWindow : public QDialog
 		 */
 		void cookieFound(const QString &cookieName);
 
+		/**
+		 * Emitted when the "Cookie monster" button is clicked.
+		 *
+		 * @param cookies The cookies currently in the web view that belong to the site
+		 */
+		void cookieMonsterClicked(const QList<QNetworkCookie> &cookies);
+
+	private:
+		bool cookieMatchesSite(const QNetworkCookie &cookie) const;
+
 	private:
 		Ui::WebViewWindow *ui;
 		Site *m_site;
 		QTimer m_saveCookies;
 		QStringList m_cookies;
+		QList<QNetworkCookie> m_webViewCookies;
 };
 
 #endif // WEBVIEW_WINDOW_H

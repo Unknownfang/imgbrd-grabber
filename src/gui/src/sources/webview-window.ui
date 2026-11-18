@@ -27,7 +27,7 @@
     <number>0</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,0">
      <property name="leftMargin">
       <number>7</number>
      </property>
@@ -47,6 +47,16 @@
       <widget class="QPushButton" name="buttonGo">
        <property name="text">
         <string>Go</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonCookieMonster">
+       <property name="text">
+        <string>Cookie monster</string>
+       </property>
+       <property name="toolTip">
+        <string>Copy this site's cookies from the web view into the Cookies table of the site options</string>
        </property>
       </widget>
      </item>

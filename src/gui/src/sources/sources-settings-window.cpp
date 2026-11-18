@@ -284,8 +284,47 @@ void SourcesSettingsWindow::openInWebView()
 {
 	#if defined(USE_WEBENGINE)
 		auto *window = new WebViewWindow(m_site, this);
+		connect(window, &WebViewWindow::cookieMonsterClicked, this, &SourcesSettingsWindow::addCookiesToTable);
 		window->show();
 	#endif
+}
+
+void SourcesSettingsWindow::addCookiesToTable(const QList<QNetworkCookie> &cookies)
+{
+	int added = 0;
+	int updated = 0;
+
+	for (const QNetworkCookie &cookie : cookies) {
+		const QString name = QString(cookie.name());
+		const QString value = QString(cookie.value());
+
+		// If a cookie with the same name is already in the table, update its value instead of adding a duplicate
+		int existingRow = -1;
+		for (int i = 0; i < ui->tableCookies->rowCount(); ++i) {
+			QTableWidgetItem *key = ui->tableCookies->item(i, 0);
+			if (key != nullptr && key->text() == name) {
+				existingRow = i;
+				break;
+			}
+		}
+
+		if (existingRow >= 0) {
+			ui->tableCookies->setItem(existingRow, 1, new QTableWidgetItem(value));
+			updated++;
+		} else {
+			const int row = ui->tableCookies->rowCount();
+			ui->tableCookies->setRowCount(row + 1);
+			ui->tableCookies->setItem(row, 0, new QTableWidgetItem(name));
+			ui->tableCookies->setItem(row, 1, new QTableWidgetItem(value));
+			added++;
+		}
+	}
+
+	QMessageBox::information(
+		this,
+		tr("Cookie monster"),
+		tr("%1 cookie(s) added, %2 cookie(s) updated.\n\nClick \"Confirm\" in the site options window to keep them.").arg(added).arg(updated)
+	);
 }
 
 void SourcesSettingsWindow::clearOtherCookies()

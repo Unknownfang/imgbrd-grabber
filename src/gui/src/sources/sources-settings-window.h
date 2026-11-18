@@ -2,7 +2,9 @@
 #define SOURCESSETTINGSWINDOW_H
 
 #include <QDialog>
+#include <QList>
 #include <QMap>
+#include <QNetworkCookie>
 #include <QString>
 #include "models/site.h"
 
@@ -37,6 +39,7 @@ class SourcesSettingsWindow : public QDialog
 		void loginTested(Site *site, Site::LoginResult result);
 		void openInWebView();
 		void clearOtherCookies();
+		void addCookiesToTable(const QList<QNetworkCookie> &cookies);
 
 	signals:
 		void siteDeleted(Site *site);
